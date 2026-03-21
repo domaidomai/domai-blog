@@ -1,0 +1,72 @@
+﻿---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBasePath } from "../lib/site";
+
+const basePath = import.meta.env.BASE_URL ?? "/";
+const pagefindBundlePath = withBasePath("/pagefind/", basePath);
+const pagefindScriptPath = withBasePath("/pagefind/pagefind-ui.js", basePath);
+---
+
+<BaseLayout title="搜索" description="搜索文章和项目内容。">
+  <section class="search-shell">
+    <div class="search-card">
+      <h1 class="page-title">搜索</h1>
+      <p class="page-intro">Pagefind 会在构建完成后生成静态索引，部署到 GitHub Pages 后也能直接使用。</p>
+      <div id="search"></div>
+      <p class="search-status" data-search-status>搜索组件会在页面加载完成后初始化。</p>
+      <div class="search-note">
+        开发模式下如果这里没有结果，先执行一次 `npm run build`，因为 Pagefind 索引是在构建产物里生成的。
+      </div>
+    </div>
+  </section>
+
+  <link rel="stylesheet" href={withBasePath("/pagefind/pagefind-ui.css", basePath)} />
+  <script is:inline define:vars={{ basePath, pagefindBundlePath, pagefindScriptPath }}>
+    const initPagefind = () => {
+      const status = document.querySelector("[data-search-status]");
+
+      if (!window.PagefindUI) {
+        if (status) {
+          status.textContent = "当前没有检测到 Pagefind UI 文件，先执行一次 npm run build 即可。";
+        }
+        return;
+      }
+
+      new window.PagefindUI({
+        element: "#search",
+        showImages: false,
+        showSubResults: true,
+        resetStyles: true,
+        pageSize: 6,
+        excerptLength: 20,
+        baseUrl: basePath,
+        bundlePath: pagefindBundlePath,
+        translations: {
+          placeholder: "搜索文章、项目、标签",
+          search_label: "搜索站点内容",
+          clear_search: "清空",
+          zero_results: "没有找到 [SEARCH_TERM] 的结果",
+          one_result: "找到 [COUNT] 条结果： [SEARCH_TERM]",
+          many_results: "找到 [COUNT] 条结果： [SEARCH_TERM]",
+          load_more: "加载更多",
+          searching: "正在搜索 [SEARCH_TERM]",
+        },
+      });
+
+      status?.remove();
+    };
+
+    window.addEventListener("load", () => {
+      if (window.PagefindUI) {
+        initPagefind();
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = pagefindScriptPath;
+      script.onload = initPagefind;
+      script.onerror = initPagefind;
+      document.body.appendChild(script);
+    });
+  </script>
+</BaseLayout>

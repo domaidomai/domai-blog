@@ -1,0 +1,37 @@
+﻿---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { buildArchiveGroups, getPublishedEntries } from "../../lib/content";
+import { withBasePath } from "../../lib/site";
+
+const posts = getPublishedEntries(await getCollection("posts"));
+const groups = buildArchiveGroups(posts);
+const basePath = import.meta.env.BASE_URL ?? "/";
+const formatter = new Intl.DateTimeFormat("zh-CN", {
+  month: "short",
+  day: "numeric",
+});
+---
+
+<BaseLayout title="归档" description="按年月回看全部文章。">
+  <section class="page-header">
+    <h1 class="page-title">归档</h1>
+    <p class="page-intro">更适合按时间线回看的读者，可以从这里快速追踪一段时间里的主题变化。</p>
+  </section>
+
+  <section class="section-space">
+    {groups.map((group) => (
+      <section class="archive-group archive-card">
+        <h3>{group.label}</h3>
+        <div class="archive-items">
+          {group.entries.map((post) => (
+            <a class="archive-item" href={withBasePath(`/posts/${post.id}/`, basePath)}>
+              <strong>{post.data.title}</strong>
+              <span>{formatter.format(post.data.pubDate)}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+  </section>
+</BaseLayout>

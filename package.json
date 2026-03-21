@@ -1,0 +1,25 @@
+{
+  "name": "blog",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "postbuild": "pagefind --site dist --root-selector main",
+    "preview": "astro preview",
+    "test": "vitest run --pool threads",
+    "check": "astro check && vitest run --pool threads"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/rss": "^4.0.17",
+    "@astrojs/sitemap": "^3.7.1",
+    "@types/node": "^25.5.0",
+    "astro": "^6.0.8",
+    "pagefind": "^1.4.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}

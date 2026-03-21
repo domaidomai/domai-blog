@@ -1,0 +1,23 @@
+﻿---
+import { siteConfig } from "../config/site";
+import { withBasePath } from "../lib/site";
+
+const basePath = import.meta.env.BASE_URL ?? "/";
+---
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="footer-copy">
+      <strong>{siteConfig.title}</strong>
+      <p>{siteConfig.description}</p>
+    </div>
+
+    <div class="footer-links">
+      {siteConfig.socialLinks.map((item) => (
+        <a href={item.href.startsWith("/") ? withBasePath(item.href, basePath) : item.href}>
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,42 @@
+﻿---
+import type { CollectionEntry } from "astro:content";
+import TagList from "./TagList.astro";
+import { withBasePath } from "../lib/site";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const basePath = import.meta.env.BASE_URL ?? "/";
+const formatter = new Intl.DateTimeFormat("zh-CN", {
+  year: "numeric",
+  month: "short",
+});
+---
+
+<article class="project-card">
+  <div class="post-meta">
+    <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
+    {project.data.featured && <span class="chip-static">精选项目</span>}
+  </div>
+  <h3>
+    <a href={withBasePath(`/projects/${project.id}/`, basePath)}>{project.data.title}</a>
+  </h3>
+  <p>{project.data.description}</p>
+  <div class="section-space">
+    <TagList tags={project.data.tags} />
+  </div>
+  <div class="project-links">
+    {project.data.repoUrl && (
+      <a class="button-link secondary" href={project.data.repoUrl} target="_blank" rel="noreferrer">
+        仓库
+      </a>
+    )}
+    {project.data.demoUrl && (
+      <a class="button-link secondary" href={project.data.demoUrl} target="_blank" rel="noreferrer">
+        演示
+      </a>
+    )}
+  </div>
+</article>

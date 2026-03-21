@@ -1,0 +1,111 @@
+﻿---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { siteConfig } from "../config/site";
+import { collectTagCounts, getFeaturedEntries, getPublishedEntries } from "../lib/content";
+import { withBasePath } from "../lib/site";
+
+const posts = getPublishedEntries(await getCollection("posts"));
+const projects = getPublishedEntries(await getCollection("projects"));
+const featuredProjects = getFeaturedEntries(projects, 3);
+const latestPosts = posts.slice(0, 4);
+const tagCounts = collectTagCounts([...posts, ...projects]).slice(0, 8);
+const basePath = import.meta.env.BASE_URL ?? "/";
+---
+
+<BaseLayout>
+  <section class="hero-grid">
+    <div class="hero-panel panel">
+      <div>
+        <span class="eyebrow">Static blog with attitude</span>
+        <h1 class="hero-title">写技术，也写作品感。</h1>
+        <p class="hero-text">
+          {siteConfig.description} 这里把博客、项目展示和工程习惯揉成一个长期可维护的静态站，不靠后端，也不牺牲体验。
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <a class="button-link primary" href={withBasePath("/posts/", basePath)}>
+          进入文章
+        </a>
+        <a class="button-link secondary" href={withBasePath("/projects/", basePath)}>
+          查看项目
+        </a>
+        <a class="button-link secondary" href={withBasePath("/search/", basePath)}>
+          站内搜索
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-side">
+      <div class="panel">
+        <div class="section-heading">
+          <h2>站点节奏</h2>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <strong>{posts.length}</strong>
+            <span>已发布文章</span>
+          </div>
+          <div class="stat-card">
+            <strong>{projects.length}</strong>
+            <span>项目案例</span>
+          </div>
+          <div class="stat-card">
+            <strong>{tagCounts.length}</strong>
+            <span>活跃标签</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-heading">
+          <h2>常写内容</h2>
+        </div>
+        <div class="tag-row">
+          {tagCounts.map((item) => (
+            <a class="chip-link" href={withBasePath(`/tags/${encodeURIComponent(item.tag)}/`, basePath)}>
+              #{item.tag} · {item.count}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-space">
+    <div class="section-heading">
+      <div>
+        <h2>精选项目</h2>
+        <p>首页先展示那些最能代表你方法论和审美的作品，而不是一长串平铺直叙的链接。</p>
+      </div>
+      <a class="button-link secondary" href={withBasePath("/projects/", basePath)}>
+        更多项目
+      </a>
+    </div>
+    <div class="project-grid">
+      {featuredProjects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+  </section>
+
+  <section class="section-space">
+    <div class="section-heading">
+      <div>
+        <h2>最新文章</h2>
+        <p>写作仍然是这座站点的核心，只是入口和视觉层级会更有作品集的味道。</p>
+      </div>
+      <a class="button-link secondary" href={withBasePath("/posts/", basePath)}>
+        全部文章
+      </a>
+    </div>
+    <div class="post-grid">
+      {latestPosts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

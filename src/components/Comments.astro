@@ -1,0 +1,67 @@
+﻿---
+import { siteConfig } from "../config/site";
+
+interface Props {
+  term: string;
+}
+
+const { term } = Astro.props;
+const giscus = siteConfig.giscus;
+const isConfigured = Boolean(giscus.repo && giscus.repoId && giscus.categoryId);
+---
+
+<section class="comment-card">
+  <h2>评论</h2>
+  {
+    isConfigured ? (
+      <>
+        <script
+          src="https://giscus.app/client.js"
+          data-repo={giscus.repo}
+          data-repo-id={giscus.repoId}
+          data-category={giscus.category}
+          data-category-id={giscus.categoryId}
+          data-mapping={giscus.mapping}
+          data-term={term}
+          data-strict={giscus.strict}
+          data-reactions-enabled={giscus.reactionsEnabled}
+          data-emit-metadata={giscus.emitMetadata}
+          data-input-position={giscus.inputPosition}
+          data-theme={giscus.lightTheme}
+          data-lang={giscus.lang}
+          crossorigin="anonymous"
+          async
+        ></script>
+        <script is:inline define:vars={{ darkTheme: giscus.darkTheme, lightTheme: giscus.lightTheme }}>
+          const syncGiscusTheme = () => {
+            const iframe = document.querySelector("iframe.giscus-frame");
+            if (!iframe) return;
+
+            const theme = document.documentElement.dataset.theme === "dark" ? darkTheme : lightTheme;
+            iframe.contentWindow?.postMessage(
+              {
+                giscus: {
+                  setConfig: {
+                    theme,
+                  },
+                },
+              },
+              "https://giscus.app",
+            );
+          };
+
+          window.addEventListener("theme-change", syncGiscusTheme);
+          window.addEventListener("load", () => {
+            window.setTimeout(syncGiscusTheme, 500);
+          });
+        </script>
+      </>
+    ) : (
+      <div class="search-note">
+        Giscus 已接入组件结构，但还没填写仓库配置。把 `src/config/site.ts` 里的 `repo`、`repoId` 和
+        `categoryId` 补上后，这里就会自动切换成评论区。
+      </div>
+    )
+  }
+</section>
+

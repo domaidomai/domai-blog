@@ -1,0 +1,63 @@
+﻿---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { collectTagCounts, getPublishedEntries } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const posts = getPublishedEntries(await getCollection("posts"));
+  const projects = getPublishedEntries(await getCollection("projects"));
+
+  return collectTagCounts([...posts, ...projects]).map((item) => ({
+    params: {
+      tag: item.tag,
+    },
+  }));
+}
+
+const tag = decodeURIComponent(Astro.params.tag ?? "");
+const posts = getPublishedEntries(await getCollection("posts")).filter((entry) => entry.data.tags.includes(tag));
+const projects = getPublishedEntries(await getCollection("projects")).filter((entry) => entry.data.tags.includes(tag));
+---
+
+<BaseLayout title={`#${tag}`} description={`围绕 ${tag} 的文章与项目集合。`}>
+  <section class="page-header">
+    <h1 class="page-title">#{tag}</h1>
+    <p class="page-intro">这个标签下共收录 {posts.length + projects.length} 条内容，文章和项目会分开展示。</p>
+  </section>
+
+  <section class="section-space">
+    <div class="section-heading">
+      <div>
+        <h2>相关文章</h2>
+      </div>
+    </div>
+    {posts.length > 0 ? (
+      <div class="post-grid">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">这个标签下暂时没有文章。</div>
+    )}
+  </section>
+
+  <section class="section-space">
+    <div class="section-heading">
+      <div>
+        <h2>相关项目</h2>
+      </div>
+    </div>
+    {projects.length > 0 ? (
+      <div class="project-grid">
+        {projects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">这个标签下暂时没有项目。</div>
+    )}
+  </section>
+</BaseLayout>

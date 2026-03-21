@@ -1,0 +1,28 @@
+﻿---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { collectTagCounts, getPublishedEntries } from "../../lib/content";
+import { withBasePath } from "../../lib/site";
+
+const posts = getPublishedEntries(await getCollection("posts"));
+const projects = getPublishedEntries(await getCollection("projects"));
+const tags = collectTagCounts([...posts, ...projects]);
+const basePath = import.meta.env.BASE_URL ?? "/";
+---
+
+<BaseLayout title="标签" description="按主题浏览文章与项目内容。">
+  <section class="page-header">
+    <h1 class="page-title">标签</h1>
+    <p class="page-intro">标签会同时覆盖文章和项目，让站点的信息结构更像一个持续生长的知识库。</p>
+  </section>
+
+  <section class="section-space tag-cloud content-card">
+    <div class="tag-row">
+      {tags.map((item) => (
+        <a class="chip-link" href={withBasePath(`/tags/${encodeURIComponent(item.tag)}/`, basePath)}>
+          #{item.tag} · {item.count}
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+﻿---
+interface HeadingLike {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: HeadingLike[];
+}
+
+const { headings } = Astro.props;
+const filteredHeadings = headings.filter((heading) => heading.depth <= 3);
+---
+
+{filteredHeadings.length > 0 && (
+  <aside class="toc-card">
+    <h2>本页目录</h2>
+    <ol class="toc-list">
+      {filteredHeadings.map((heading) => (
+        <li>
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        </li>
+      ))}
+    </ol>
+  </aside>
+)}

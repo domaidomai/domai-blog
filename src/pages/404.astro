@@ -1,0 +1,21 @@
+﻿---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBasePath } from "../lib/site";
+
+const basePath = import.meta.env.BASE_URL ?? "/";
+---
+
+<BaseLayout title="404" description="没有找到对应页面。" noindex={true}>
+  <section class="page-header">
+    <h1 class="page-title">页面走丢了</h1>
+    <p class="page-intro">你访问的地址不存在，可能是链接过期，也可能是我还没把这篇内容发布出来。</p>
+    <div class="button-row">
+      <a class="button-link primary" href={withBasePath("/", basePath)}>
+        回到首页
+      </a>
+      <a class="button-link secondary" href={withBasePath("/posts/", basePath)}>
+        去看文章
+      </a>
+    </div>
+  </section>
+</BaseLayout>

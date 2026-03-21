@@ -1,0 +1,23 @@
+﻿---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getPublishedEntries } from "../../lib/content";
+
+const projects = getPublishedEntries(await getCollection("projects"));
+---
+
+<BaseLayout title="项目" description="项目案例、设计系统和工程化实践展示。">
+  <section class="page-header">
+    <h1 class="page-title">项目</h1>
+    <p class="page-intro">这里不只是放作品截图，而是保留问题、决策、取舍和落地方式。</p>
+  </section>
+
+  <section class="section-space">
+    <div class="project-grid">
+      {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

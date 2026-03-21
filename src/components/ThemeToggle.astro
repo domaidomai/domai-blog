@@ -1,0 +1,25 @@
+﻿<button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深色模式">
+  深浅切换
+</button>
+
+<script is:inline>
+  const storageKey = "stack-edge-theme";
+
+  const applyTheme = (theme) => {
+    document.documentElement.dataset.theme = theme;
+    window.dispatchEvent(new CustomEvent("theme-change", { detail: theme }));
+  };
+
+  const getNextTheme = () => {
+    const current = document.documentElement.dataset.theme || "light";
+    return current === "dark" ? "light" : "dark";
+  };
+
+  for (const button of document.querySelectorAll("[data-theme-toggle]")) {
+    button.addEventListener("click", () => {
+      const nextTheme = getNextTheme();
+      localStorage.setItem(storageKey, nextTheme);
+      applyTheme(nextTheme);
+    });
+  }
+</script>

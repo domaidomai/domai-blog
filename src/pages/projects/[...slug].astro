@@ -1,0 +1,74 @@
+﻿---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TagList from "../../components/TagList.astro";
+import { getPublishedEntries } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const projects = getPublishedEntries(await getCollection("projects"));
+  return projects.map((project) => ({
+    params: {
+      slug: project.id,
+    },
+  }));
+}
+
+const projects = getPublishedEntries(await getCollection("projects"));
+const slug = Astro.params.slug ?? "";
+const project = projects.find((entry) => entry.id === slug);
+
+if (!project) {
+  throw new Error(`Project not found for slug: ${slug}`);
+}
+
+const { Content } = await render(project);
+const formatter = new Intl.DateTimeFormat("zh-CN", {
+  year: "numeric",
+  month: "long",
+});
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+  <section class="article-shell">
+    <article class="article-card">
+      <header class="article-header">
+        <div class="meta-row">
+          <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
+          {project.data.featured && <span class="chip-static">首页精选</span>}
+        </div>
+        <h1 class="article-title">{project.data.title}</h1>
+        <p class="page-intro">{project.data.description}</p>
+        <TagList tags={project.data.tags} />
+        <div class="project-links">
+          {project.data.techStack.map((item) => (
+            <span class="chip-static">{item}</span>
+          ))}
+        </div>
+        <div class="project-links">
+          {project.data.repoUrl && (
+            <a class="button-link primary" href={project.data.repoUrl} target="_blank" rel="noreferrer">
+              查看仓库
+            </a>
+          )}
+          {project.data.demoUrl && (
+            <a class="button-link secondary" href={project.data.demoUrl} target="_blank" rel="noreferrer">
+              访问演示
+            </a>
+          )}
+        </div>
+      </header>
+
+      <div class="article-prose">
+        <Content />
+      </div>
+    </article>
+
+    <aside class="toc-card">
+      <h2>项目概览</h2>
+      <p class="supporting-text">
+        这个页面把项目背景、结构、交互和取舍写完整，适合在博客与作品集之间搭起一道桥。
+      </p>
+    </aside>
+  </section>
+</BaseLayout>
+

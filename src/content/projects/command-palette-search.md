@@ -1,11 +1,9 @@
 ﻿---
-title: Command Palette Search（示例示例
+title: 命令面板搜索（示例）
 description: 一个为内容型站点设计的搜索入口，把 Pagefind 结果做成更像产品交互的体验。
 pubDate: 2026-03-16
 tags:
-  - search
-  - astro
-  - design
+  - 示例
 featured: true
 techStack:
   - Astro
@@ -32,3 +30,4 @@ heroImage: /og-default.svg
 - 搜索结果密度
 
 这类项目如果只在首页放一个链接，会很难体现它的价值。
+

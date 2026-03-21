@@ -3,9 +3,7 @@ title: GitHub Pages 静态部署的几个关键细节
 description: 让 Astro 站点在 GitHub Pages 上稳定运行时，最容易漏掉的是 base 路径和搜索静态资源。
 pubDate: 2026-02-25
 tags:
-  - github
-  - deploy
-  - astro
+  - 示例
 featured: true
 heroImage: /og-default.svg
 ---

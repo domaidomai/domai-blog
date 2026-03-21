@@ -1,6 +1,6 @@
 ﻿export const siteConfig = {
-  title: "domai's Blog",
-  subtitle: "用技术弄点好玩的",
+  title: "domai 的博客",
+  subtitle: "用技术折腾点有意思的东西",
   description:
     "一个用 Astro 与 Markdown 构建的静态技术博客，聚焦工程实践、界面设计和长期写作。",
   siteUrl: import.meta.env.PUBLIC_SITE_URL ?? "https://domaidomai.github.io",
@@ -34,3 +34,4 @@
     darkTheme: "dark",
   },
 } as const;
+

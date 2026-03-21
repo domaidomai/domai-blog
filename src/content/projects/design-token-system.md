@@ -1,14 +1,12 @@
 ﻿---
-title: Design Token System（示例示例
+title: 设计令牌系统（示例）
 description: 用一组可扩展的颜色、圆角和排版 token，把博客界面的气质和一致性稳定下来。
 pubDate: 2026-03-08
 tags:
-  - design
-  - css
-  - system
+  - 示例
 featured: true
 techStack:
-  - CSS Variables
+  - CSS 变量
   - Astro
   - Figma
 repoUrl: https://github.com/yourname/design-token-system
@@ -30,3 +28,4 @@ heroImage: /og-default.svg
 ## 最终效果
 
 你看到的并不是一套“花哨样式”，而是一套能支撑长期迭代的视觉基础设施。
+

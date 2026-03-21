@@ -3,9 +3,7 @@ title: Markdown 驱动的写作流为什么更适合个人站
 description: 当内容数量慢慢变多，Markdown 和 frontmatter 能让博客从“能发文”变成“可维护”。
 pubDate: 2026-03-10
 tags:
-  - markdown
-  - workflow
-  - writing
+  - 示例
 featured: false
 heroImage: /og-default.svg
 ---

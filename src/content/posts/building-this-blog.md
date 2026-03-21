@@ -4,9 +4,7 @@ description: 从信息结构、视觉语言到 GitHub Pages 发布，把技术�
 pubDate: 2026-03-18
 updatedDate: 2026-03-20
 tags:
-  - astro
-  - blog
-  - design
+  - 示例
 featured: true
 series: 静态博客实践
 heroImage: /og-default.svg

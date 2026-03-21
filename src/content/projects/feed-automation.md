@@ -1,11 +1,9 @@
 ﻿---
-title: Feed Automation（示例示例
+title: 内容订阅自动化（示例）
 description: 把 RSS、内容摘要和静态构建串成一个简单可维护的发布辅助流程。
 pubDate: 2026-02-28
 tags:
-  - automation
-  - rss
-  - workflow
+  - 示例
 featured: false
 techStack:
   - RSS
@@ -27,3 +25,4 @@ heroImage: /og-default.svg
 ## 适合谁
 
 适合那些已经开始稳定写作，并且想让博客不仅是网页，也能成为内容分发源的人。
+

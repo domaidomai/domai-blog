@@ -6,12 +6,11 @@ updatedDate: 2026-03-22
 tags:
   - Prompt
   - 大模型
+  - Agent
 featured: true
-series: 静态博客实践
-heroImage: /og-default.svg
+series: Agent学习
+heroImage: /default-cover.svg
 ---
-
-# 模型调用与 Prompt
 
 ## 1. 前言：文档定位与学习目标
 

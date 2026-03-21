@@ -5,7 +5,7 @@ import Comments from "../../components/Comments.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
 import TagList from "../../components/TagList.astro";
 import { getAdjacentEntries, getPublishedEntries } from "../../lib/content";
-import { withBasePath } from "../../lib/site";
+import { resolveContentImage, withBasePath } from "../../lib/site";
 
 export async function getStaticPaths() {
   const posts = getPublishedEntries(await getCollection("posts"));
@@ -32,11 +32,13 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
   day: "numeric",
 });
 const basePath = import.meta.env.BASE_URL ?? "/";
+const heroImage = resolveContentImage(post.data.heroImage, basePath);
 ---
 
 <BaseLayout
   title={post.data.title}
   description={post.data.description}
+  image={post.data.heroImage}
   type="article"
   publishedTime={post.data.pubDate.toISOString()}
   updatedTime={post.data.updatedDate?.toISOString()}
@@ -44,6 +46,9 @@ const basePath = import.meta.env.BASE_URL ?? "/";
   <section class="article-shell">
     <article class="article-card">
       <header class="article-header">
+        <div class="article-cover-wrap">
+          <img class="article-cover-image" src={heroImage} alt={`${post.data.title} 封面`} />
+        </div>
         <div class="meta-row">
           <span class="chip-static">{formatter.format(post.data.pubDate)}</span>
           {post.data.updatedDate && <span class="chip-static">更新于 {formatter.format(post.data.updatedDate)}</span>}

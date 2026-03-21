@@ -1,5 +1,5 @@
 ﻿export const siteConfig = {
-  title: "domai 的博客",
+  title: "domai 的博客 | 栈边风景",
   subtitle: "用技术折腾点有意思的东西",
   description:
     "一个用 Astro 与 Markdown 构建的静态技术博客，聚焦工程实践、界面设计和长期写作。",

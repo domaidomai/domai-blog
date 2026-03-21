@@ -7,7 +7,7 @@ tags:
   - 示例
 featured: true
 series: 静态博客实践
-heroImage: /og-default.svg
+heroImage: /default-cover.svg
 ---
 
 很多个人博客的问题不在技术栈，而在目标不清。它既想承载文章，又想展示项目，还想顺手承担个人主页的角色，最后就会变成一堆互相争抢注意力的模块。

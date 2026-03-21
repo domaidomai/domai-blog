@@ -1,7 +1,7 @@
 ﻿---
 import type { CollectionEntry } from "astro:content";
 import TagList from "./TagList.astro";
-import { withBasePath } from "../lib/site";
+import { resolveContentImage, withBasePath } from "../lib/site";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -13,21 +13,28 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
   year: "numeric",
   month: "short",
 });
+const detailHref = withBasePath(`/projects/${project.id}/`, basePath);
+const coverImage = resolveContentImage(project.data.heroImage, basePath);
 ---
 
-<article class="project-card">
-  <div class="post-meta">
-    <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
-    {project.data.featured && <span class="chip-static">精选项目</span>}
-  </div>
-  <h3>
-    <a href={withBasePath(`/projects/${project.id}/`, basePath)}>{project.data.title}</a>
-  </h3>
-  <p>{project.data.description}</p>
-  <div class="section-space">
-    <TagList tags={project.data.tags} />
-  </div>
-  <div class="project-links">
+<article class="project-card card-with-cover">
+  <a class="card-link" href={detailHref} aria-label={`查看项目：${project.data.title}`}>
+    <div class="card-cover-wrap">
+      <img class="card-cover-image" src={coverImage} alt={`${project.data.title} 封面`} loading="lazy" />
+    </div>
+    <div class="card-body">
+      <div class="post-meta">
+        <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
+        {project.data.featured && <span class="chip-static">精选项目</span>}
+      </div>
+      <div class="card-summary">
+        <h3>{project.data.title}</h3>
+        <p>{project.data.description}</p>
+      </div>
+      <TagList tags={project.data.tags} linked={false} />
+    </div>
+  </a>
+  <div class="project-links project-card-actions">
     {project.data.repoUrl && (
       <a class="button-link secondary" href={project.data.repoUrl} target="_blank" rel="noreferrer">
         仓库

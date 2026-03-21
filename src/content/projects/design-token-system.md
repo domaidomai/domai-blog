@@ -11,7 +11,7 @@ techStack:
   - Figma
 repoUrl: https://github.com/yourname/design-token-system
 demoUrl: https://example.com/design-token-system
-heroImage: /og-default.svg
+heroImage: /default-cover.svg
 ---
 
 博客一旦开始有文章页、项目页、搜索页和归档页，如果没有设计 token，很快就会在细节上失控。

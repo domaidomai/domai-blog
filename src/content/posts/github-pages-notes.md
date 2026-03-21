@@ -5,7 +5,7 @@ pubDate: 2026-02-25
 tags:
   - 示例
 featured: true
-heroImage: /og-default.svg
+heroImage: /default-cover.svg
 ---
 
 静态博客上线到 GitHub Pages 其实不复杂，但有几个细节非常容易被忽略。

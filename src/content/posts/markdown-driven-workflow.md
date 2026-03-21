@@ -5,7 +5,7 @@ pubDate: 2026-03-10
 tags:
   - 示例
 featured: false
-heroImage: /og-default.svg
+heroImage: /default-cover.svg
 ---
 
 一篇文章真正的成本，往往不是写出来，而是未来还能不能方便地修改、归档、搬迁和重组。

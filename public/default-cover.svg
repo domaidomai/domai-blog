@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0F1717"/>
+  <circle cx="180" cy="160" r="220" fill="#0E7C66" fill-opacity="0.4"/>
+  <circle cx="1030" cy="80" r="200" fill="#F0B429" fill-opacity="0.35"/>
+  <rect x="82" y="86" width="1036" height="458" rx="40" fill="#162323" stroke="#61D3BC" stroke-opacity="0.3"/>
+  <text x="110" y="236" fill="#EDF2EF" font-size="82" font-family="Georgia, 'Noto Serif SC', serif">栈边风景</text>
+  <text x="110" y="316" fill="#A7BBB3" font-size="34" font-family="'Segoe UI', 'PingFang SC', sans-serif">domai 的博客 · 用技术折腾点有意思的东西</text>
+  <text x="110" y="402" fill="#95F2DC" font-size="38" font-family="'Segoe UI', 'PingFang SC', sans-serif">工程实践 · 界面设计 · 长期写作</text>
+  <text x="110" y="470" fill="#C7D7D1" font-size="24" font-family="'Segoe UI', 'PingFang SC', sans-serif">没有单独封面时，文章和项目会默认使用这张封面</text>
+</svg>

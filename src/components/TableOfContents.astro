@@ -1,27 +1,68 @@
 ﻿---
-interface HeadingLike {
-  depth: number;
-  slug: string;
-  text: string;
-}
+import { buildTableOfContentsGroups, type TocHeading } from "../lib/toc";
 
 interface Props {
-  headings: HeadingLike[];
+  headings: TocHeading[];
 }
 
 const { headings } = Astro.props;
-const filteredHeadings = headings.filter((heading) => heading.depth <= 3);
+const groups = buildTableOfContentsGroups(headings);
 ---
 
-{filteredHeadings.length > 0 && (
-  <aside class="toc-card">
-    <h2>本页目录</h2>
-    <ol class="toc-list">
-      {filteredHeadings.map((heading) => (
-        <li>
-          <a href={`#${heading.slug}`}>{heading.text}</a>
-        </li>
-      ))}
-    </ol>
+{groups.length > 0 && (
+  <aside>
+    <details class="toc-card" open>
+      <summary class="toc-summary">
+        <span>本页目录</span>
+        <span class="toc-summary-icon" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="m5 8 5 5 5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </span>
+      </summary>
+      <ol class="toc-list toc-root-list">
+        {groups.map((group) => (
+          <li class={`toc-item toc-group-item toc-depth-${group.heading.depth}`}>
+            {group.children.length > 0 ? (
+              <>
+                <input
+                  id={`toc-group-${group.heading.slug}`}
+                  class="toc-group-input"
+                  type="checkbox"
+                  checked
+                />
+                <div class="toc-group-row">
+                  <a class="toc-link toc-group-link" href={`#${group.heading.slug}`}>
+                    {group.heading.text}
+                  </a>
+                  <label
+                    class="toc-group-toggle"
+                    for={`toc-group-${group.heading.slug}`}
+                    aria-label={`折叠 ${group.heading.text} 子目录`}
+                  >
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="m7 5 6 5-6 5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  </label>
+                </div>
+                <ol class="toc-sublist">
+                  {group.children.map((heading) => (
+                    <li class={`toc-item toc-depth-${heading.depth}`}>
+                      <a class="toc-link" href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </>
+            ) : (
+              <a class="toc-link toc-group-link" href={`#${group.heading.slug}`}>
+                {group.heading.text}
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </details>
   </aside>
 )}

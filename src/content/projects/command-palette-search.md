@@ -11,7 +11,7 @@ techStack:
   - TypeScript
 repoUrl: https://github.com/yourname/command-palette-search
 demoUrl: https://example.com/command-palette-search
-heroImage: /og-default.svg
+heroImage: /default-cover.svg
 ---
 
 这个项目的目标不是“把搜索框放上去”，而是让搜索真正成为站点里的高频入口。

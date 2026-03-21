@@ -1,6 +1,6 @@
 ﻿---
 import { siteConfig } from "../config/site";
-import { withBasePath } from "../lib/site";
+import { DEFAULT_CONTENT_IMAGE, withBasePath } from "../lib/site";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import "../styles/global.css";
@@ -18,7 +18,7 @@ interface Props {
 const {
   title = siteConfig.title,
   description = siteConfig.description,
-  image = "/og-default.svg",
+  image = DEFAULT_CONTENT_IMAGE,
   type = "website",
   noindex = false,
   publishedTime,

@@ -17,3 +17,15 @@ export const withBasePath = (path: string, basePath = "/") => {
 
   return `${normalizedBase}${normalizedPath}`;
 };
+
+export const DEFAULT_CONTENT_IMAGE = "/default-cover.svg";
+
+export const resolveContentImage = (image: string | undefined, basePath = "/") => {
+  const candidate = image?.trim() || DEFAULT_CONTENT_IMAGE;
+
+  if (/^https?:\/\//.test(candidate)) {
+    return candidate;
+  }
+
+  return withBasePath(candidate, basePath);
+};

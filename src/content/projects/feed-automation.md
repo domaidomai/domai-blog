@@ -11,7 +11,7 @@ techStack:
   - Node.js
 repoUrl: https://github.com/yourname/feed-automation
 demoUrl: https://example.com/feed-automation
-heroImage: /og-default.svg
+heroImage: /default-cover.svg
 ---
 
 静态博客不是不能做自动化，只是自动化应该围绕“少维护”和“可追踪”来设计。

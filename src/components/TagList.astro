@@ -3,16 +3,21 @@ import { withBasePath } from "../lib/site";
 
 interface Props {
   tags: string[];
+  linked?: boolean;
 }
 
-const { tags } = Astro.props;
+const { tags, linked = true } = Astro.props;
 const basePath = import.meta.env.BASE_URL ?? "/";
 ---
 
 <div class="tag-row">
-  {tags.map((tag) => (
-    <a class="chip-link" href={withBasePath(`/tags/${encodeURIComponent(tag)}/`, basePath)}>
-      #{tag}
-    </a>
-  ))}
+  {tags.map((tag) =>
+    linked ? (
+      <a class="chip-link" href={withBasePath(`/tags/${encodeURIComponent(tag)}/`, basePath)}>
+        #{tag}
+      </a>
+    ) : (
+      <span class="chip-static">#{tag}</span>
+    ),
+  )}
 </div>

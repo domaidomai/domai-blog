@@ -1,5 +1,5 @@
 ﻿---
-title: Command Palette Search
+title: Command Palette Search（示例示例
 description: 一个为内容型站点设计的搜索入口，把 Pagefind 结果做成更像产品交互的体验。
 pubDate: 2026-03-16
 tags:

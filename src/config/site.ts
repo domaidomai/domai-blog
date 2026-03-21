@@ -1,9 +1,9 @@
 ﻿export const siteConfig = {
-  title: "栈边风景",
-  subtitle: "中文技术写作、项目复盘与有一点锋芒的个人展示",
+  title: "domai's Blog",
+  subtitle: "用技术弄点好玩的",
   description:
     "一个用 Astro 与 Markdown 构建的静态技术博客，聚焦工程实践、界面设计和长期写作。",
-  siteUrl: import.meta.env.PUBLIC_SITE_URL ?? "https://yourname.github.io",
+  siteUrl: import.meta.env.PUBLIC_SITE_URL ?? "https://domaidomai.github.io",
   basePath: import.meta.env.BASE_URL ?? "/",
   nav: [
     { label: "首页", href: "/" },
@@ -17,13 +17,13 @@
   socialLinks: [
     { label: "GitHub", href: "https://github.com/domaidomai" },
     { label: "RSS", href: "/rss.xml" },
-    { label: "Email", href: "1611997621@qq.com" },
+    { label: "Email", href: "mailto:1611997621@qq.com" },
   ],
   giscus: {
-    repo: "",
-    repoId: "",
+    repo: "domaidomai/domai-blog",
+    repoId: "R_kgDORtESJQ",
     category: "General",
-    categoryId: "",
+    categoryId: "DIC_kwDORtESJc4C49sM",
     mapping: "pathname",
     strict: "0",
     reactionsEnabled: "1",

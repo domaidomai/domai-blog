@@ -1,5 +1,5 @@
 ﻿---
-title: Feed Automation
+title: Feed Automation（示例示例
 description: 把 RSS、内容摘要和静态构建串成一个简单可维护的发布辅助流程。
 pubDate: 2026-02-28
 tags:

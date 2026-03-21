@@ -1,5 +1,5 @@
 ﻿---
-title: Design Token System
+title: Design Token System（示例示例
 description: 用一组可扩展的颜色、圆角和排版 token，把博客界面的气质和一致性稳定下来。
 pubDate: 2026-03-08
 tags:

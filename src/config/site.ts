@@ -2,9 +2,18 @@
   title: "domai 的博客 | 栈边风景",
   subtitle: "用技术折腾点有意思的东西",
   description:
-    "一个用 Astro 与 Markdown 构建的静态技术博客，聚焦工程实践、界面设计和长期写作。",
+    "一个记录 Java、AI 全栈和 Agent 学习过程的静态博客，写工程实践，也写一些带未来感的脑洞实验。",
   siteUrl: import.meta.env.PUBLIC_SITE_URL ?? "https://domaidomai.github.io",
   basePath: import.meta.env.BASE_URL ?? "/",
+  profile: {
+    name: "domai",
+    role: "AI 全栈 · JAVA · 古法编程非遗继承",
+    headline: `2038年，编程已死。人类不再手敲代码，只写Prompt。`,
+    summary: "AI 提效，原理深耕。AI 再厉害也取代不了人类，毕竟它写的 bug 都没我多。",
+    avatarImage: "/domai.jpg",
+    bannerImage: "/profile-banner.svg",
+  },
+  footerTopics: ["Java", "AI 全栈", "Agent 学习", "工程实验"],
   nav: [
     { label: "首页", href: "/" },
     { label: "文章", href: "/posts/" },
@@ -34,4 +43,3 @@
     darkTheme: "dark",
   },
 } as const;
-

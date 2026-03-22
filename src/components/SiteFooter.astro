@@ -31,6 +31,14 @@ const footerIcons = {
     <div class="footer-copy">
       <strong>{siteConfig.title}</strong>
       <p>{siteConfig.description}</p>
+      <div class="footer-topic-block" aria-label="常写内容">
+        <span class="footer-topic-label">常写内容</span>
+        <div class="footer-topic-row">
+          {siteConfig.footerTopics.map((topic) => (
+            <span class="footer-topic-chip">#{topic}</span>
+          ))}
+        </div>
+      </div>
     </div>
 
     <div class="footer-links">

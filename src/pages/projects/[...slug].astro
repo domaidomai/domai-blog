@@ -1,8 +1,10 @@
 ﻿---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import MermaidEnhancer from "../../components/MermaidEnhancer.astro";
 import TagList from "../../components/TagList.astro";
 import { getPublishedEntries } from "../../lib/content";
+import { hasMermaidDiagram } from "../../lib/mermaid";
 import { resolveContentImage } from "../../lib/site";
 
 export async function getStaticPaths() {
@@ -29,6 +31,7 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
 });
 const basePath = import.meta.env.BASE_URL ?? "/";
 const heroImage = resolveContentImage(project.data.heroImage, basePath);
+const usesMermaid = hasMermaidDiagram(project.body ?? "");
 ---
 
 <BaseLayout title={project.data.title} description={project.data.description} image={project.data.heroImage}>
@@ -67,6 +70,7 @@ const heroImage = resolveContentImage(project.data.heroImage, basePath);
       <div class="article-prose">
         <Content />
       </div>
+      <MermaidEnhancer enabled={usesMermaid} />
     </article>
 
     <aside class="toc-card">

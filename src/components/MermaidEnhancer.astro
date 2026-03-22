@@ -1,0 +1,135 @@
+---
+interface Props {
+  enabled?: boolean;
+}
+
+const { enabled = false } = Astro.props;
+---
+
+{
+  enabled ? (
+    <script>
+      import mermaid from "mermaid";
+
+      const selector = ".article-prose pre[data-language='mermaid']";
+      let renderNonce = 0;
+      let lastTheme = "";
+
+      const resolveTheme = () =>
+        document.documentElement.dataset.theme === "dark" ? "dark" : "neutral";
+
+      const upgradeBlocks = () => {
+        const blocks = document.querySelectorAll<HTMLElement>(selector);
+
+        blocks.forEach((block) => {
+          const source = block.textContent?.trim();
+          if (!source) {
+            return;
+          }
+
+          const figure = document.createElement("figure");
+          figure.className = "mermaid-figure";
+          figure.dataset.mermaidSource = source;
+
+          const scroll = document.createElement("div");
+          scroll.className = "mermaid-scroll";
+
+          const surface = document.createElement("div");
+          surface.className = "mermaid-surface";
+
+          const diagram = document.createElement("div");
+          diagram.className = "mermaid-diagram";
+
+          surface.appendChild(diagram);
+          scroll.appendChild(surface);
+          figure.appendChild(scroll);
+          block.replaceWith(figure);
+        });
+      };
+
+      const renderFigures = async () => {
+        const theme = resolveTheme();
+        lastTheme = theme;
+
+        mermaid.initialize({
+          startOnLoad: false,
+          securityLevel: "loose",
+          theme,
+          fontFamily: "JetBrains Mono, SFMono-Regular, monospace",
+        });
+
+        const figures = document.querySelectorAll<HTMLElement>(".mermaid-figure");
+
+        for (const figure of figures) {
+          const source = figure.dataset.mermaidSource;
+          const mount = figure.querySelector(".mermaid-diagram");
+
+          if (!source || !mount) {
+            continue;
+          }
+
+          figure.dataset.renderState = "rendering";
+          mount.innerHTML = "";
+
+          try {
+            const { svg, bindFunctions } = await mermaid.render(`stack-edge-mermaid-${renderNonce++}`, source);
+            mount.innerHTML = svg;
+            bindFunctions?.(mount);
+
+            const svgElement = mount.querySelector("svg");
+            if (svgElement) {
+              svgElement.style.width = "100%";
+              svgElement.style.minWidth = "34rem";
+              svgElement.style.height = "auto";
+            }
+
+            figure.dataset.renderState = "ready";
+          } catch (error) {
+            figure.dataset.renderState = "error";
+
+            const fallback = document.createElement("pre");
+            fallback.className = "mermaid-fallback";
+
+            const code = document.createElement("code");
+            code.textContent = source;
+            fallback.appendChild(code);
+
+            mount.replaceChildren(fallback);
+            console.error("Mermaid 图表渲染失败", error);
+          }
+        }
+      };
+
+      const start = async () => {
+        if (!document.querySelector(selector)) {
+          return;
+        }
+
+        upgradeBlocks();
+        await renderFigures();
+      };
+
+      const boot = () => {
+        void start();
+
+        const observer = new MutationObserver(() => {
+          const nextTheme = resolveTheme();
+          if (nextTheme !== lastTheme) {
+            void renderFigures();
+          }
+        });
+
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        });
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot, { once: true });
+      } else {
+        boot();
+      }
+    </script>
+  ) : null
+}

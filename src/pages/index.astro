@@ -1,17 +1,22 @@
 ﻿---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeProfileCard from "../components/HomeProfileCard.astro";
 import PostCard from "../components/PostCard.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { siteConfig } from "../config/site";
-import { collectTagCounts, getFeaturedEntries, getPublishedEntries } from "../lib/content";
+import { getFeaturedEntries, getPublishedEntries } from "../lib/content";
+import { buildHomeProfileStats } from "../lib/home";
 import { withBasePath } from "../lib/site";
 
 const posts = getPublishedEntries(await getCollection("posts"));
 const projects = getPublishedEntries(await getCollection("projects"));
 const featuredProjects = getFeaturedEntries(projects, 3);
 const latestPosts = posts.slice(0, 4);
-const tagCounts = collectTagCounts([...posts, ...projects]).slice(0, 8);
+const profileStats = buildHomeProfileStats({
+  postCount: posts.length,
+  projectCount: projects.length,
+});
 const basePath = import.meta.env.BASE_URL ?? "/";
 ---
 
@@ -22,7 +27,7 @@ const basePath = import.meta.env.BASE_URL ?? "/";
         <span class="eyebrow">中文技术博客</span>
         <h1 class="hero-title">写技术，也写作品感。</h1>
         <p class="hero-text">
-          {siteConfig.description} 这里把博客、项目展示和工程习惯揉成一个长期可维护的静态站，不靠后端，也不牺牲体验。
+          {siteConfig.description}
         </p>
       </div>
 
@@ -40,38 +45,7 @@ const basePath = import.meta.env.BASE_URL ?? "/";
     </div>
 
     <div class="hero-side">
-      <div class="panel">
-        <div class="section-heading">
-          <h2>站点节奏</h2>
-        </div>
-        <div class="stat-grid">
-          <div class="stat-card">
-            <strong>{posts.length}</strong>
-            <span>已发布文章</span>
-          </div>
-          <div class="stat-card">
-            <strong>{projects.length}</strong>
-            <span>项目案例</span>
-          </div>
-          <div class="stat-card">
-            <strong>{tagCounts.length}</strong>
-            <span>活跃标签</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="section-heading">
-          <h2>常写内容</h2>
-        </div>
-        <div class="tag-row">
-          {tagCounts.map((item) => (
-            <a class="chip-link" href={withBasePath(`/tags/${encodeURIComponent(item.tag)}/`, basePath)}>
-              #{item.tag} · {item.count}
-            </a>
-          ))}
-        </div>
-      </div>
+      <HomeProfileCard stats={profileStats} basePath={basePath} />
     </div>
   </section>
 

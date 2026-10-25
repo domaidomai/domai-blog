@@ -11,12 +11,9 @@ const pagefindScriptPath = withBasePath("/pagefind/pagefind-ui.js", basePath);
   <section class="search-shell">
     <div class="search-card">
       <h1 class="page-title">搜索</h1>
-      <p class="page-intro">Pagefind 会在构建完成后生成静态索引，部署到 GitHub Pages 后也能直接使用。</p>
+      <p class="page-intro">输入关键词，查找文章和项目。</p>
       <div id="search"></div>
-      <p class="search-status" data-search-status>搜索组件会在页面加载完成后初始化。</p>
-      <div class="search-note">
-        开发模式下如果这里没有结果，先执行一次 `npm run build`，因为 Pagefind 索引是在构建产物里生成的。
-      </div>
+      <p class="search-status" data-search-status>正在加载搜索…</p>
     </div>
   </section>
 
@@ -27,7 +24,7 @@ const pagefindScriptPath = withBasePath("/pagefind/pagefind-ui.js", basePath);
 
       if (!window.PagefindUI) {
         if (status) {
-          status.textContent = "当前没有检测到 Pagefind UI 文件，先执行一次 npm run build 即可。";
+          status.textContent = "搜索暂时无法加载，请刷新页面重试。";
         }
         return;
       }

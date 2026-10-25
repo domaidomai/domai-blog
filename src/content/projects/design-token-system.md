@@ -5,6 +5,7 @@ pubDate: 2026-03-08
 tags:
   - 示例
 featured: true
+draft: true
 techStack:
   - CSS 变量
   - Astro

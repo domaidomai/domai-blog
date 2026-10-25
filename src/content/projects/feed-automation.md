@@ -5,6 +5,7 @@ pubDate: 2026-02-28
 tags:
   - 示例
 featured: false
+draft: true
 techStack:
   - RSS
   - GitHub Actions

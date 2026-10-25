@@ -5,6 +5,7 @@ pubDate: 2026-03-16
 tags:
   - 示例
 featured: true
+draft: true
 techStack:
   - Astro
   - Pagefind

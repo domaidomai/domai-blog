@@ -13,6 +13,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_SITE_URL: https://blog.domaidomai.top
+      PUBLIC_BASE_PATH: /
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5

@@ -1,7 +1,7 @@
 ﻿---
 import type { CollectionEntry } from "astro:content";
 import TagList from "./TagList.astro";
-import { resolveContentImage, withBasePath } from "../lib/site";
+import { withBasePath } from "../lib/site";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -15,21 +15,17 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
   day: "numeric",
 });
 const href = withBasePath(`/posts/${post.id}/`, basePath);
-const coverImage = resolveContentImage(post.data.heroImage, basePath);
 ---
 
 <article class="content-card card-with-cover">
   <a class="card-link" href={href} aria-label={`查看文章：${post.data.title}`}>
-    <div class="card-cover-wrap">
-      <img class="card-cover-image" src={coverImage} alt={`${post.data.title} 封面`} loading="lazy" />
-    </div>
     <div class="card-body">
       <div class="post-meta">
         <span class="chip-static">{formatter.format(post.data.pubDate)}</span>
         {post.data.series && <span class="chip-static">系列 · {post.data.series}</span>}
       </div>
       <div class="card-summary">
-        <h3>{post.data.title}</h3>
+        <h3 style={`view-transition-name: title-${Buffer.from(post.id).toString("hex")}`}>{post.data.title}</h3>
         <p>{post.data.description}</p>
       </div>
       <TagList tags={post.data.tags} linked={false} />

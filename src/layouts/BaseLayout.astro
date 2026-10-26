@@ -1,6 +1,7 @@
 ﻿---
 import { siteConfig } from "../config/site";
 import { DEFAULT_CONTENT_IMAGE, withBasePath } from "../lib/site";
+import MotionEffects from "../components/MotionEffects.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import "../styles/global.css";
@@ -72,6 +73,7 @@ const imageUrl = image.startsWith("http")
       <slot />
     </main>
     <SiteFooter />
+    <MotionEffects />
     <script
       is:inline
       defer

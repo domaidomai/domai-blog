@@ -3,23 +3,35 @@
 </button>
 
 <script is:inline>
-  const storageKey = "stack-edge-theme";
-
-  const applyTheme = (theme) => {
-    document.documentElement.dataset.theme = theme;
-    window.dispatchEvent(new CustomEvent("theme-change", { detail: theme }));
-  };
-
-  const getNextTheme = () => {
-    const current = document.documentElement.dataset.theme || "light";
-    return current === "dark" ? "light" : "dark";
-  };
-
-  for (const button of document.querySelectorAll("[data-theme-toggle]")) {
-    button.addEventListener("click", () => {
-      const nextTheme = getNextTheme();
-      localStorage.setItem(storageKey, nextTheme);
-      applyTheme(nextTheme);
-    });
-  }
+  (() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    for (const button of document.querySelectorAll("[data-theme-toggle]")) {
+      button.addEventListener("click", async () => {
+        if (document.documentElement.classList.contains("theme-transition")) return;
+        const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        const apply = () => {
+          document.documentElement.dataset.theme = next;
+          try { localStorage.setItem("stack-edge-theme", next); } catch {}
+          window.dispatchEvent(new CustomEvent("theme-change", { detail: next }));
+        };
+        if (!document.startViewTransition || reduced.matches) { apply(); return; }
+        const rect = button.getBoundingClientRect();
+        const x = rect.left + rect.width / 2, y = rect.top + rect.height / 2;
+        document.documentElement.classList.add("theme-transition");
+        const transition = document.startViewTransition(apply);
+        try {
+          await transition.ready;
+          const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+          const animation = document.documentElement.animate(
+            { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+            { duration: 520, easing: "ease-in-out", pseudoElement: "::view-transition-new(root)" },
+          );
+          await animation.finished;
+        } finally {
+          await transition.finished;
+          document.documentElement.classList.remove("theme-transition");
+        }
+      });
+    }
+  })();
 </script>

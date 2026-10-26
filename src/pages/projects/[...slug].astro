@@ -5,7 +5,6 @@ import MermaidEnhancer from "../../components/MermaidEnhancer.astro";
 import TagList from "../../components/TagList.astro";
 import { getPublishedEntries } from "../../lib/content";
 import { hasMermaidDiagram } from "../../lib/mermaid";
-import { resolveContentImage } from "../../lib/site";
 
 export async function getStaticPaths() {
   const projects = getPublishedEntries(await getCollection("projects"));
@@ -29,8 +28,6 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
   year: "numeric",
   month: "long",
 });
-const basePath = import.meta.env.BASE_URL ?? "/";
-const heroImage = resolveContentImage(project.data.heroImage, basePath);
 const usesMermaid = hasMermaidDiagram(project.body ?? "");
 ---
 
@@ -38,14 +35,11 @@ const usesMermaid = hasMermaidDiagram(project.body ?? "");
   <section class="article-shell">
     <article class="article-card">
       <header class="article-header">
-        <div class="article-cover-wrap">
-          <img class="article-cover-image" src={heroImage} alt={`${project.data.title} 封面`} />
-        </div>
         <div class="meta-row">
           <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
           {project.data.featured && <span class="chip-static">首页精选</span>}
         </div>
-        <h1 class="article-title">{project.data.title}</h1>
+        <h1 style={`view-transition-name: project-title-${Buffer.from(project.id).toString("hex")}`} class="article-title">{project.data.title}</h1>
         <p class="page-intro">{project.data.description}</p>
         <TagList tags={project.data.tags} />
         <div class="project-links">

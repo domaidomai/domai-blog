@@ -1,0 +1,88 @@
+<div class="reading-progress" aria-hidden="true"></div>
+
+<script>
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  const items = document.querySelectorAll<HTMLElement>(".hero-title, .section-heading, .page-header, .content-card, .project-card");
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("motion-visible");
+        observer.unobserve(entry.target);
+      }
+    }
+  }, { threshold: 0.08 });
+  items.forEach((el, i) => {
+    if (el.getBoundingClientRect().top > innerHeight * 0.8 && !reduced.matches) {
+      el.classList.add("motion-enter");
+      el.style.setProperty("--enter-delay", `${(i % 3) * 60}ms`);
+      observer.observe(el);
+    }
+  });
+
+  document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((card) => {
+    let frame = 0;
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      card.style.removeProperty("--tilt-x");
+      card.style.removeProperty("--tilt-y");
+    };
+    card.addEventListener("pointermove", (event) => {
+      if (reduced.matches || !fine.matches || event.pointerType === "touch") return;
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        card.style.setProperty("--tilt-x", `${-y * 5}deg`);
+        card.style.setProperty("--tilt-y", `${x * 6}deg`);
+      });
+    });
+    card.addEventListener("pointerleave", reset);
+    card.addEventListener("pointercancel", reset);
+    reduced.addEventListener("change", reset);
+  });
+
+  const article = document.querySelector<HTMLElement>("[data-reading-article]");
+  const line = document.querySelector<HTMLElement>(".reading-progress");
+  if (article && line) {
+    line.hidden = false;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = article.getBoundingClientRect();
+      const header = document.querySelector(".site-header")?.getBoundingClientRect().height ?? 0;
+      const prose = article.querySelector(".article-prose")?.getBoundingClientRect();
+      const height = prose ? prose.bottom - rect.top : rect.height;
+      const total = Math.max(1, height - innerHeight + header);
+      line.style.transform = `scaleX(${Math.max(0, Math.min(1, (header - rect.top) / total))})`;
+    };
+    window.addEventListener("scroll", () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
+</script>
+
+<style is:global>
+  @view-transition { navigation: auto; }
+  ::view-transition-group(*) { animation-duration: 380ms; animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+  .theme-transition::view-transition-old(root), .theme-transition::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  .theme-transition::view-transition-new(root) { z-index: 100; }
+  .theme-transition::view-transition-group(*) { animation-duration: 0s; }
+  .theme-transition * { view-transition-name: none !important; }
+  .motion-enter { opacity: 0; translate: 0 18px; transition: opacity 550ms var(--enter-delay, 0ms), translate 550ms cubic-bezier(.22, 1, .36, 1) var(--enter-delay, 0ms); }
+  .motion-visible { opacity: 1; translate: 0 0; }
+  [data-tilt] { transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)); transition: transform 280ms ease-out, opacity 550ms var(--enter-delay, 0ms), translate 550ms cubic-bezier(.22, 1, .36, 1) var(--enter-delay, 0ms); }
+  [data-tilt]:active { transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(.985); }
+  .reading-progress { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 100; background: linear-gradient(90deg, var(--accent), var(--highlight)); box-shadow: 0 0 9px var(--accent); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+  body:has([data-reading-article]) .reading-progress { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    .motion-enter { opacity: 1; translate: none; transition: none; }
+    [data-tilt], [data-tilt]:active { transform: none; transition: none; }
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  }
+</style>

@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import MermaidEnhancer from "../../components/MermaidEnhancer.astro";
+import { DEFAULT_CONTENT_IMAGE, withBasePath } from "../../lib/site";
 import TagList from "../../components/TagList.astro";
 import { getPublishedEntries } from "../../lib/content";
 import { hasMermaidDiagram } from "../../lib/mermaid";
@@ -28,6 +29,7 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
   year: "numeric",
   month: "long",
 });
+const basePath = import.meta.env.BASE_URL ?? "/";
 const usesMermaid = hasMermaidDiagram(project.body ?? "");
 ---
 
@@ -35,6 +37,9 @@ const usesMermaid = hasMermaidDiagram(project.body ?? "");
   <section class="article-shell">
     <article class="article-card">
       <header class="article-header">
+        <div class="article-cover-wrap">
+          <img class="article-cover-image" src={withBasePath(DEFAULT_CONTENT_IMAGE, basePath)} alt={`${project.data.title} 封面`} style={`view-transition-name: project-cover-${Buffer.from(project.id).toString("hex")}`} />
+        </div>
         <div class="meta-row">
           <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
           {project.data.featured && <span class="chip-static">首页精选</span>}

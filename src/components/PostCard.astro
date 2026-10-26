@@ -1,7 +1,7 @@
 ﻿---
 import type { CollectionEntry } from "astro:content";
 import TagList from "./TagList.astro";
-import { withBasePath } from "../lib/site";
+import { DEFAULT_CONTENT_IMAGE, withBasePath } from "../lib/site";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -19,6 +19,9 @@ const href = withBasePath(`/posts/${post.id}/`, basePath);
 
 <article class="content-card card-with-cover">
   <a class="card-link" href={href} aria-label={`查看文章：${post.data.title}`}>
+    <div class="card-cover-wrap">
+      <img class="card-cover-image" src={withBasePath(DEFAULT_CONTENT_IMAGE, basePath)} alt={`${post.data.title} 封面`} loading="lazy" style={`view-transition-name: cover-${Buffer.from(post.id).toString("hex")}`} />
+    </div>
     <div class="card-body">
       <div class="post-meta">
         <span class="chip-static">{formatter.format(post.data.pubDate)}</span>

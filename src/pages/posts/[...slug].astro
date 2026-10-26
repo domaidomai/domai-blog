@@ -7,7 +7,7 @@ import TableOfContents from "../../components/TableOfContents.astro";
 import TagList from "../../components/TagList.astro";
 import { getAdjacentEntries, getPublishedEntries } from "../../lib/content";
 import { hasMermaidDiagram } from "../../lib/mermaid";
-import { withBasePath } from "../../lib/site";
+import { DEFAULT_CONTENT_IMAGE, withBasePath } from "../../lib/site";
 
 export async function getStaticPaths() {
   const posts = getPublishedEntries(await getCollection("posts"));
@@ -48,6 +48,9 @@ const usesMermaid = hasMermaidDiagram(post.body ?? "");
   <section class="article-shell">
     <article class="article-card" data-reading-article>
       <header class="article-header">
+        <div class="article-cover-wrap">
+          <img class="article-cover-image" src={withBasePath(DEFAULT_CONTENT_IMAGE, basePath)} alt={`${post.data.title} 封面`} style={`view-transition-name: cover-${Buffer.from(post.id).toString("hex")}`} />
+        </div>
         <div class="meta-row">
           <span class="chip-static">{formatter.format(post.data.pubDate)}</span>
           {post.data.updatedDate && <span class="chip-static">更新于 {formatter.format(post.data.updatedDate)}</span>}

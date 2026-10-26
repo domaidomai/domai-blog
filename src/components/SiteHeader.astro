@@ -44,8 +44,19 @@ const isActive = (href: string) => {
         </a>
       ))}
       <ThemeToggle />
-      <LanguageSwitch />
     </nav>
+    <div class="language-slot"><LanguageSwitch /></div>
   </div>
 </header>
+
+<style>
+  .site-header-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; }
+  .brand, .brand-copy, .nav-links { min-width: 0; }
+  .language-slot { justify-self: end; }
+  @media (max-width: 720px) {
+    .site-header-inner { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+    .nav-links { grid-column: 1 / -1; grid-row: 2; }
+    .language-slot { grid-column: 2; grid-row: 1; }
+  }
+</style>
 

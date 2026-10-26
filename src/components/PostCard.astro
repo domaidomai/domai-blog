@@ -24,7 +24,7 @@ const href = withBasePath(`/posts/${post.id}/`, basePath);
     </div>
     <div class="card-body">
       <div class="post-meta">
-        <span class="chip-static">{formatter.format(post.data.pubDate)}</span>
+        <span class="chip-static" data-ui-date={post.data.pubDate.toISOString()}>{formatter.format(post.data.pubDate)}</span>
         {post.data.series && <span class="chip-static">系列 · {post.data.series}</span>}
       </div>
       <div class="card-summary">

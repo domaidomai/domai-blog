@@ -43,6 +43,7 @@ const isConfigured = Boolean(giscus.repo && giscus.repoId && giscus.categoryId);
                 giscus: {
                   setConfig: {
                     theme,
+                    lang: document.documentElement.lang === "en" ? "en" : "zh-CN",
                   },
                 },
               },
@@ -51,6 +52,7 @@ const isConfigured = Boolean(giscus.repo && giscus.repoId && giscus.categoryId);
           };
 
           window.addEventListener("theme-change", syncGiscusTheme);
+          window.addEventListener("language-change", syncGiscusTheme);
           window.addEventListener("load", () => {
             window.setTimeout(syncGiscusTheme, 500);
           });

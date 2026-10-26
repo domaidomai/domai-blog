@@ -27,7 +27,7 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
           {group.entries.map((post) => (
             <a class="archive-item" href={withBasePath(`/posts/${post.id}/`, basePath)}>
               <strong>{post.data.title}</strong>
-              <span>{formatter.format(post.data.pubDate)}</span>
+              <span data-ui-date={post.data.pubDate.toISOString()}>{formatter.format(post.data.pubDate)}</span>
             </a>
           ))}
         </div>

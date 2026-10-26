@@ -41,7 +41,7 @@ const usesMermaid = hasMermaidDiagram(project.body ?? "");
           <img class="article-cover-image" src={withBasePath(DEFAULT_CONTENT_IMAGE, basePath)} alt={`${project.data.title} 封面`} style={`view-transition-name: project-cover-${Buffer.from(project.id).toString("hex")}`} />
         </div>
         <div class="meta-row">
-          <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
+          <span class="chip-static" data-ui-date={project.data.pubDate.toISOString()}>{formatter.format(project.data.pubDate)}</span>
           {project.data.featured && <span class="chip-static">首页精选</span>}
         </div>
         <h1 style={`view-transition-name: project-title-${Buffer.from(project.id).toString("hex")}`} class="article-title">{project.data.title}</h1>

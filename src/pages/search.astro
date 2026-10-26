@@ -19,17 +19,20 @@ const pagefindScriptPath = withBasePath("/pagefind/pagefind-ui.js", basePath);
 
   <link rel="stylesheet" href={withBasePath("/pagefind/pagefind-ui.css", basePath)} />
   <script is:inline define:vars={{ basePath, pagefindBundlePath, pagefindScriptPath }}>
+    let searchUI;
     const initPagefind = () => {
       const status = document.querySelector("[data-search-status]");
 
       if (!window.PagefindUI) {
         if (status) {
-          status.textContent = "搜索暂时无法加载，请刷新页面重试。";
+          status.textContent = document.documentElement.lang === "en" ? "Search couldn't load. Please refresh and try again." : "搜索暂时无法加载，请刷新页面重试。";
         }
         return;
       }
 
-      new window.PagefindUI({
+      const query = document.querySelector("#search input")?.value ?? "";
+      searchUI?.destroy();
+      searchUI = new window.PagefindUI({
         element: "#search",
         showImages: false,
         showSubResults: true,
@@ -38,7 +41,16 @@ const pagefindScriptPath = withBasePath("/pagefind/pagefind-ui.js", basePath);
         excerptLength: 20,
         baseUrl: basePath,
         bundlePath: pagefindBundlePath,
-        translations: {
+        translations: document.documentElement.lang === "en" ? {
+          placeholder: "Search articles, projects, and tags",
+          search_label: "Search this site",
+          clear_search: "Clear",
+          zero_results: "No results for [SEARCH_TERM]",
+          one_result: "[COUNT] result for [SEARCH_TERM]",
+          many_results: "[COUNT] results for [SEARCH_TERM]",
+          load_more: "Load more",
+          searching: "Searching for [SEARCH_TERM]",
+        } : {
           placeholder: "搜索文章、项目、标签",
           search_label: "搜索站点内容",
           clear_search: "清空",
@@ -50,9 +62,11 @@ const pagefindScriptPath = withBasePath("/pagefind/pagefind-ui.js", basePath);
         },
       });
 
+      if (query) searchUI.triggerSearch(query);
       status?.remove();
     };
 
+    window.addEventListener("language-change", () => { if (window.PagefindUI) initPagefind(); });
     window.addEventListener("load", () => {
       if (window.PagefindUI) {
         initPagefind();

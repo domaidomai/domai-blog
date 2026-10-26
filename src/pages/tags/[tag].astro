@@ -24,7 +24,7 @@ const projects = getPublishedEntries(await getCollection("projects")).filter((en
 <BaseLayout title={`#${tag}`} description={`围绕 ${tag} 的文章与项目集合。`}>
   <section class="page-header">
     <h1 class="page-title">#{tag}</h1>
-    <p class="page-intro">这个标签下共收录 {posts.length + projects.length} 条内容。</p>
+    <p class="page-intro" data-ui-count={posts.length + projects.length}>这个标签下共收录 {posts.length + projects.length} 条内容。</p>
   </section>
 
   <section class="section-space">

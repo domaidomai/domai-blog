@@ -1,0 +1,56 @@
+<button class="language-switch nav-link" type="button" data-language-switch aria-label="Switch to English" lang="en">EN</button>
+
+<script>
+  import { getLanguage, translateUI, formatUIDate, type Language } from "../lib/locale";
+
+  const textNodes = new Map<Text, string>();
+  const attributes: { element: Element; name: string; original: string }[] = [];
+  const skip = "script, style, code, pre, svg, .article-prose, .card-summary, .article-title, .toc-link, .tag-row, .tag-cloud, .supporting-text, .archive-item strong, #search, [data-language-switch], [data-ui-date], [data-ui-count]";
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode as Text;
+    if (node.textContent?.trim() && !node.parentElement?.closest(skip)) textNodes.set(node, node.textContent);
+  }
+  document.querySelectorAll("[aria-label], img[alt]").forEach((element) => {
+    if (element.closest(".article-prose, #search, [data-language-switch]")) return;
+    for (const name of ["aria-label", "alt"]) {
+      const original = element.getAttribute(name);
+      if (original) attributes.push({ element, name, original });
+    }
+  });
+  const title = document.title;
+  document.querySelectorAll<HTMLElement>(".article-prose, .card-summary, .article-title, .toc-list, .tag-row, .tag-cloud, .archive-item strong, .supporting-text").forEach((element) => element.lang = "zh-CN");
+
+  function apply(language: Language) {
+    document.documentElement.lang = language;
+    for (const [node, original] of textNodes) node.textContent = translateUI(original, language);
+    for (const { element, name, original } of attributes) element.setAttribute(name, translateUI(original, language));
+    document.querySelectorAll<HTMLElement>("[data-ui-date]").forEach((element) => {
+      const date = formatUIDate(element.dataset.uiDate!, language);
+      const prefix = element.dataset.updated !== undefined ? (language === "en" ? "Updated " : "更新于 ") : "";
+      element.textContent = prefix + date;
+    });
+    document.querySelectorAll<HTMLElement>("[data-ui-count]").forEach((element) => {
+      element.textContent = language === "en" ? `${element.dataset.uiCount} items with this tag.` : `这个标签下共收录 ${element.dataset.uiCount} 条内容。`;
+    });
+    document.title = title.replace("domai 的博客 | 栈边风景", translateUI("domai 的博客 | 栈边风景", language)).split(" | ").map(part => translateUI(part, language)).join(" | ");
+    document.querySelectorAll<HTMLButtonElement>("[data-language-switch]").forEach((button) => {
+      button.textContent = language === "en" ? "中文" : "EN";
+      button.lang = language === "en" ? "zh-CN" : "en";
+      button.setAttribute("aria-label", language === "en" ? "切换到中文" : "Switch to English");
+    });
+    window.dispatchEvent(new CustomEvent("language-change", { detail: language }));
+  }
+  let language = getLanguage(document.documentElement.lang);
+  apply(language);
+  document.querySelectorAll("[data-language-switch]").forEach((button) => button.addEventListener("click", () => {
+    language = language === "en" ? "zh-CN" : "en";
+    try { localStorage.setItem("stack-edge-language", language); } catch {}
+    apply(language);
+  }));
+</script>
+
+<style>
+  .language-switch { background: transparent; cursor: pointer; font: inherit; font-size: 0.85rem; min-width: 44px; }
+  @media (max-width: 720px) { .language-switch { order: -1; } }
+</style>

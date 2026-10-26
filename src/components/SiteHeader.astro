@@ -1,6 +1,7 @@
 ﻿---
 import { siteConfig } from "../config/site";
 import { resolveContentImage, withBasePath } from "../lib/site";
+import LanguageSwitch from "./LanguageSwitch.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
 interface Props {
@@ -43,6 +44,7 @@ const isActive = (href: string) => {
         </a>
       ))}
       <ThemeToggle />
+      <LanguageSwitch />
     </nav>
   </div>
 </header>

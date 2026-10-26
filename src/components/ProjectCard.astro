@@ -23,7 +23,7 @@ const detailHref = withBasePath(`/projects/${project.id}/`, basePath);
     </div>
     <div class="card-body">
       <div class="post-meta">
-        <span class="chip-static">{formatter.format(project.data.pubDate)}</span>
+        <span class="chip-static" data-ui-date={project.data.pubDate.toISOString()}>{formatter.format(project.data.pubDate)}</span>
         {project.data.featured && <span class="chip-static">精选项目</span>}
       </div>
       <div class="card-summary">

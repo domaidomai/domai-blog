@@ -52,8 +52,8 @@ const usesMermaid = hasMermaidDiagram(post.body ?? "");
           <img class="article-cover-image" src={withBasePath(DEFAULT_CONTENT_IMAGE, basePath)} alt={`${post.data.title} 封面`} style={`view-transition-name: cover-${Buffer.from(post.id).toString("hex")}`} />
         </div>
         <div class="meta-row">
-          <span class="chip-static">{formatter.format(post.data.pubDate)}</span>
-          {post.data.updatedDate && <span class="chip-static">更新于 {formatter.format(post.data.updatedDate)}</span>}
+          <span class="chip-static" data-ui-date={post.data.pubDate.toISOString()}>{formatter.format(post.data.pubDate)}</span>
+          {post.data.updatedDate && <span class="chip-static" data-ui-date={post.data.updatedDate.toISOString()} data-updated>更新于 {formatter.format(post.data.updatedDate)}</span>}
           {post.data.series && <span class="chip-static">系列 · {post.data.series}</span>}
         </div>
         <h1 style={`view-transition-name: title-${Buffer.from(post.id).toString("hex")}`} class="article-title">{post.data.title}</h1>
